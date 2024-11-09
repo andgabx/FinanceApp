@@ -1,30 +1,12 @@
 "use client";
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
+import { Transaction_Category_Labels, Transaction_Payment_Method_Labels } from "@/app/_constants/transactions";
 import { Transaction, TransactionType } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CircleIcon, PencilIcon, TrashIcon } from "lucide-react";
 import test from "node:test";
 
-export const Transaction_Category_Labels = {
-  EDUCATION: "Educação",
-  FOOD: "Alimentação",
-  HEALTH: "Saúde",
-  HOUSING: "Moradia",
-  INVESTMENT: "Investimento",
-  TRANSPORTATION: "Transporte",
-  UTILITIES: "Utilidades",
-  OTHER: "Outros",
-  SALARY: "Salário",
-};
-
-export const Transaction_Payment_Method_Labels = {
-  CREDIT_CARD: "Cartão de Crédito",
-  DEBIT_CARD: "Cartão de Débito",
-  MONEY: "Dinheiro",
-  PIX: "PIX",
-  TRANSFER: "Transferência",
-};
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
@@ -40,7 +22,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         return (
           <Badge className="bg-muted hover:bg-muted text-primary">
             <CircleIcon className="fill-primary mr-2" size={10} />
-            Deposit
+            Depósito
           </Badge>
         );
       }
@@ -64,7 +46,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
               className="fill-white text-destructive mr-2"
               size={10}
             />
-            Investiment
+            Investimento
           </Badge>
         );
       }
