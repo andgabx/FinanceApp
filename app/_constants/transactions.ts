@@ -69,39 +69,35 @@ export const PaymentMethodOptions = [
 
 export const TransactionCategoryOptions = [
   {
-    Value: TransactionCategory.EDUCATION,
+    value: TransactionCategory.EDUCATION,
     label: "Education",
   },
   {
-    Value: TransactionCategory.FOOD,
+    value: TransactionCategory.FOOD,
     label: "Food",
   },
   {
-    Value: TransactionCategory.HEALTH,
+    value: TransactionCategory.HEALTH,
     label: "Health",
   },
   {
-    Value: TransactionCategory.HOUSING,
+    value: TransactionCategory.HOUSING,
     label: "Housing",
   },
   {
-    Value: TransactionCategory.TRANSPORTATION,
+    value: TransactionCategory.TRANSPORTATION,
     label: "Transportation",
   },
   {
-    Value: TransactionCategory.OTHER,
+    value: TransactionCategory.OTHER,
     label: "Other",
   },
   {
-    Value: TransactionCategory.SALARY,
+    value: TransactionCategory.SALARY,
     label: "Salary",
   },
   {
-    Value: TransactionCategory.ETERTAINMENT,
+    value: TransactionCategory.ETERTAINMENT,
     label: "Entertainment",
-  },
-  {
-    Value: TransactionCategory.OTHER,
-    label: "Other",
   },
 ];
