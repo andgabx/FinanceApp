@@ -3,7 +3,6 @@ import {
   TransactionPaymentMethod,
   TransactionType,
 } from "@prisma/client";
-import { Value } from "@radix-ui/react-select";
 
 export const Transaction_Category_Labels = {
   EDUCATION: "Educação",
@@ -23,6 +22,7 @@ export const Transaction_Payment_Method_Labels = {
   MONEY: "Dinheiro",
   PIX: "PIX",
   TRANSFER: "Transferência",
+  BANK_SLIP: "Boleto",
 };
 
 export const TransactionTypeOptions = [
@@ -70,34 +70,35 @@ export const PaymentMethodOptions = [
 export const TransactionCategoryOptions = [
   {
     value: TransactionCategory.EDUCATION,
-    label: "Education",
+    label: "Educação",
   },
   {
     value: TransactionCategory.FOOD,
-    label: "Food",
+    label: "Comida",
   },
   {
     value: TransactionCategory.HEALTH,
-    label: "Health",
+    label: "Saúde",
   },
   {
     value: TransactionCategory.HOUSING,
-    label: "Housing",
+    label: "Moradia",
   },
   {
     value: TransactionCategory.TRANSPORTATION,
-    label: "Transportation",
-  },
-  {
-    value: TransactionCategory.OTHER,
-    label: "Other",
+    label: "Transporte",
   },
   {
     value: TransactionCategory.SALARY,
-    label: "Salary",
+    label: "Salário",
   },
   {
-    value: TransactionCategory.ETERTAINMENT,
-    label: "Entertainment",
+    value: TransactionCategory.ENTERTAINMENT,
+    label: "Entretenimento",
+  },
+  {
+    value: TransactionCategory.OTHER,
+    label: "Outros",
   },
 ];
+

@@ -4,19 +4,20 @@ import { Button } from "@/app/_components/ui/button";
 import { Transaction_Category_Labels, Transaction_Payment_Method_Labels } from "@/app/_constants/transactions";
 import { Transaction, TransactionType } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { CircleIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { CircleIcon, Edit, PencilIcon, TrashIcon } from "lucide-react";
 import test from "node:test";
+import EditTransactionButton from "../_components/edit-transaction-button";
 
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Nome",
   },
 
   {
     accessorKey: "type",
-    header: "Type",
+    header: "Tipo",
     cell: ({ row: { original: transaction } }) => {
       if (transaction.type === TransactionType.DEPOSIT) {
         return (
@@ -55,13 +56,13 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
 
   {
     accessorKey: "category",
-    header: "Category",
+    header: "Categoria",
     cell: ({ row: { original: transaction } }) =>
       Transaction_Category_Labels[transaction.category],
   },
   {
     accessorKey: "amount",
-    header: "Amount",
+    header: "Quantia",
     cell: ({ row: { original: transaction } }) =>
       new Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -71,13 +72,26 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
 
   {
     accessorKey: "paymentMethod",
-    header: "Payment Method",
-    cell: ({ row: { original: transaction } }) =>
-      Transaction_Payment_Method_Labels[transaction.paymentMethod],
+    header: "Método de Pagamento",
+    cell: ({ row: { original: transaction } }) => {
+      if (transaction.paymentMethod === 'CREDIT_CARD') {
+        return 'Cartão de Crédito';
+      } else if (transaction.paymentMethod === 'DEBIT_CARD') {
+        return 'Cartão de Débito';
+      } else if (transaction.paymentMethod === 'CASH') {
+        return 'Dinheiro';
+      } else if (transaction.paymentMethod === 'PIX') {
+          return 'Pix';
+      } else if (transaction.paymentMethod === 'BANK_TRANSFER') {
+          return 'Transferência';
+      } else if (transaction.paymentMethod === 'BANK_SLIP') {
+        return "Boleto";
+      }
+    },
   },
   {
     accessorKey: "date",
-    header: "Date",
+    header: "Data",
     cell: ({ row: { original: transaction } }) =>
       new Date(transaction.date).toLocaleDateString("pt-BR", {
         year: "numeric",
@@ -88,13 +102,11 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
 
   {
     accessorKey: "actions",
-    header: "Actions",
-    cell: () => {
+    header: "Ações",
+    cell: ({row: { original: transaction}}) => {
       return (
         <div className="space-x-1">
-          <Button variant="ghost" size="icon" className="text-muted-foreground">
-            <PencilIcon />
-          </Button>
+          <EditTransactionButton transaction={transaction} />
           <Button variant="ghost" size="icon" className="text-muted-foreground">
             <TrashIcon />
           </Button>   
