@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const subscription = () => {
+const Navbar = () => {
     const pathname = usePathname();
 
     return ( 
@@ -25,6 +25,6 @@ const subscription = () => {
       <UserButton showName />
     </nav>
   );
-}
+};
  
-export default subscription;
+export default Navbar;
