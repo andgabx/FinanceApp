@@ -5,7 +5,7 @@ import {
 } from "@prisma/client";
 import { z } from "zod";
 
-export const upsertTransactionSchema = z.object({
+export const UpsertTransactionSchema = z.object({
   name: z
     .string()
     .trim()
@@ -14,4 +14,5 @@ export const upsertTransactionSchema = z.object({
   amount: z.number().positive(),
   category: z.nativeEnum(TransactionCategory),
   paymentMethod: z.nativeEnum(TransactionPaymentMethod),
+  date: z.date(),
 });
