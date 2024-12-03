@@ -30,7 +30,7 @@ const LoginPage = async () => {
         <SignInButton>
           <Button
             variant="default"
-            className="bg-primary text-primary-foreground hover:bg-opacity-80"
+            className="bg-muted text-primary-foreground hover:bg-opacity-80"
           >
             <LogInIcon className="mr-3" />
             <p className="font-bold">Login or Create Account</p>

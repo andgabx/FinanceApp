@@ -1,29 +1,17 @@
-"use client";
 
-import { UserButton } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
+import Navbar from "../_components/ui/navbar";
+import { auth } from "@clerk/nextjs/server";
 
-const subscription = () => {
-    const pathname = usePathname();
-
+const subscription = async() => {
+    
+    const { userId } = await auth();
+    if (userId) {
+      redirect("/");
+    }
+    
     return ( 
-    <nav className="flex justify-between px-8 py-4 border-b border-solid">
-      <div className="flex items-center gap-10">
-        <Image src="/logo.svg" width={173} height={39} alt="Logo" />
-        <Link href="/" className={
-            pathname === "/" ? "text-primary font-bold" : "text-muted-foreground"
-        }>Dashboard</Link>
-        <Link href="/transactions" className={
-            pathname === "/transactions" ? "text-primary font-bold" : "text-muted-foreground"
-        }>Transações</Link>
-        <Link href="/subscription" className={
-            pathname === "/subscription" ? "text-primary font-bold" : "text-muted-foreground"
-        }>Assinar</Link>
-      </div>
-      <UserButton showName />
-    </nav>
+    <Navbar/>
   );
 }
  
