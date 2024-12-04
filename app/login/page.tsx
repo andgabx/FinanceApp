@@ -2,14 +2,9 @@ import Image from "next/image";
 import { Button } from "../_components/ui/button";
 import { LogInIcon } from "lucide-react";
 import { SignInButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 
 const LoginPage = async () => {
-  const { userId } = await auth();
-  if (userId) {
-    redirect("/");
-  }
+  
 
   return (
     <div className="grid h-full grid-cols-2">

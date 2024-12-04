@@ -9,7 +9,7 @@ const Navbar = () => {
     const pathname = usePathname();
 
     return ( 
-    <nav className="flex justify-between px-8 py-4 border-b border-solid">
+    <nav className="px-8 py-4 border-b border-solid">
       <div className="flex items-center gap-10">
         <Image src="/logo.svg" width={173} height={39} alt="Logo" />
         <Link href="/" className={
@@ -21,8 +21,9 @@ const Navbar = () => {
         <Link href="/subscription" className={
             pathname === "/subscription" ? "text-primary font-bold" : "text-muted-foreground"
         }>Assinar</Link>
+        <UserButton showName />
       </div>
-      <UserButton showName />
+      
     </nav>
   );
 };
