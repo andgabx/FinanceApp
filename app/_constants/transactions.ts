@@ -14,16 +14,28 @@ export const Transaction_Category_Labels = {
   UTILITIES: "Utilidades",
   OTHER: "Outros",
   SALARY: "Salário",
+  ENTERTAINMENT: "Entretenimento",
 };
 
+export const Transaction_Payment_Method_Icons = {
+  [TransactionPaymentMethod.CREDIT_CARD]: "/credit-card.svg",
+  [TransactionPaymentMethod.DEBIT_CARD]: "/debit-card.svg",
+  [TransactionPaymentMethod.CASH]: "/money.svg",
+  [TransactionPaymentMethod.PIX]: "/pix.svg",
+  [TransactionPaymentMethod.BANK_TRANSFER]: "/transfer.svg",
+  [TransactionPaymentMethod.BANK_SLIP]: "/bank-slip.svg",
+  [TransactionPaymentMethod.OTHER]: "/other.svg",
+} as const;
+
 export const Transaction_Payment_Method_Labels = {
-  CREDIT_CARD: "Cartão de Crédito",
-  DEBIT_CARD: "Cartão de Débito",
-  MONEY: "Dinheiro",
-  PIX: "PIX",
-  TRANSFER: "Transferência",
-  BANK_SLIP: "Boleto",
-};
+  [TransactionPaymentMethod.CREDIT_CARD]: "Cartão de Crédito",
+  [TransactionPaymentMethod.DEBIT_CARD]: "Cartão de Débito",
+  [TransactionPaymentMethod.CASH]: "Dinheiro",
+  [TransactionPaymentMethod.PIX]: "PIX",
+  [TransactionPaymentMethod.BANK_TRANSFER]: "Transferência",
+  [TransactionPaymentMethod.BANK_SLIP]: "Boleto",
+  [TransactionPaymentMethod.OTHER]: "Outro",
+} as const;
 
 export const TransactionTypeOptions = [
   {

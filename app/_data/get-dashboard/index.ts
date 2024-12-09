@@ -1,6 +1,7 @@
 import { db } from "@/app/_lib/prisma";
 import { TransactionType } from "@prisma/client";
 import { TotalExpensesPerCategory } from "./types";
+import { Decimal } from "@prisma/client/runtime/library";
 
 export const getDashboard = async (month: string) => {
   const where = {
@@ -55,13 +56,21 @@ export const getDashboard = async (month: string) => {
           amount: true,
         },
       })
-  ).map((category: { category: string; _sum: { amount: number | null } }) => ({
+  ).map((category: { category: string; _sum: { amount: Decimal | null } }) => ({
     category: category.category,
     totalAmount: Number(category._sum.amount),
     percentageOfTotal: Math.round(
       (Number(category._sum.amount) / Number(expensesTotal)) * 100
     ),
   }));
+
+  const lastTransactions = await db.transaction.findMany({
+    where,
+    orderBy: {
+      date: "desc",
+    },
+    take: 10,
+  });
 
   const typesPercentage = {
     [TransactionType.DEPOSIT]: Math.round(
@@ -82,5 +91,6 @@ export const getDashboard = async (month: string) => {
     balance,
     typesPercentage,
     TotalExpensesPerCategory,
+    lastTransactions,
   };
 };
