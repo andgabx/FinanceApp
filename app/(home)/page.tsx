@@ -6,7 +6,7 @@ import TimeSelect from "./_components/time-select";
 import { isMatch } from "date-fns";
 import TransactionsPieChart from "./_components/transactions-pie-chart";
 import { getDashboard } from "../_data/get-dashboard";
-
+import ExpensePerCategory from "./_components/expernse-per-category";
 
 interface HomeProps {
   searchParams: {
@@ -15,16 +15,16 @@ interface HomeProps {
 }
 
 const Home = async ({ searchParams: { month } }: HomeProps) => {
-  const {userId} = await auth();
+  const { userId } = await auth();
   if (!userId) {
-    redirect('/login')
+    redirect("/login");
   }
   const monthIsInvalid = !month || !isMatch(month, "MM");
   if (monthIsInvalid) {
-    redirect('?month=01');
+    redirect("?month=01");
   }
 
-const dashboard = await getDashboard(month);
+  const dashboard = await getDashboard(month);
   return (
     <>
       <Navbar />
@@ -32,28 +32,35 @@ const dashboard = await getDashboard(month);
       <div className="p-6 space-y-6 gap-6">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold">Dashboard</h1>
-          <TimeSelect/>
+          <TimeSelect />
         </div>
         <div className="grid grid-cols-[2fr_1fr]">
           <div className="flex flex-col gap-4">
-          <SummaryCards {...dashboard} month={month} />
-          <div className="grid grid-cols-3 grid-rows-1 gap-6">
-            <TransactionsPieChart 
-              depositsTotal={dashboard.depositsTotal ? Number(dashboard.depositsTotal) : 0}
-              investmentsTotal={dashboard.investmentsTotal ? Number(dashboard.investmentsTotal) : 0}
-              expensesTotal={dashboard.expensesTotal ? Number(dashboard.expensesTotal) : 0}
-              balance={dashboard.balance}
-            />
+            <SummaryCards {...dashboard} month={month} />
+            <div className="grid grid-cols-3 grid-rows-1 gap-6">
+              <TransactionsPieChart
+                depositsTotal={
+                  dashboard.depositsTotal ? Number(dashboard.depositsTotal) : 0
+                }
+                investmentsTotal={
+                  dashboard.investmentsTotal
+                    ? Number(dashboard.investmentsTotal)
+                    : 0
+                }
+                expensesTotal={
+                  dashboard.expensesTotal ? Number(dashboard.expensesTotal) : 0
+                }
+                balance={dashboard.balance}
+              />
+              <ExpensePerCategory
+                expensesPerCategory={dashboard.TotalExpensesPerCategory}
+              />
+            </div>
           </div>
-          </div>
-
         </div>
-
       </div>
-
-
     </>
   );
-}
- 
+};
+
 export default Home;
