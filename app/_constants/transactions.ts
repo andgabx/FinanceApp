@@ -22,7 +22,7 @@ export const Transaction_Payment_Method_Icons = {
   [TransactionPaymentMethod.DEBIT_CARD]: "/debit-card.svg",
   [TransactionPaymentMethod.CASH]: "/money.svg",
   [TransactionPaymentMethod.PIX]: "/pix.svg",
-  [TransactionPaymentMethod.BANK_TRANSFER]: "/transfer.svg",
+  [TransactionPaymentMethod.BANK_TRANSFER]: "/bank-transfer.svg",
   [TransactionPaymentMethod.BANK_SLIP]: "/bank-slip.svg",
   [TransactionPaymentMethod.OTHER]: "/other.svg",
 } as const;
