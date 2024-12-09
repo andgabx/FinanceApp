@@ -2,13 +2,20 @@ import { db } from "@/app/_lib/prisma";
 import { TransactionType } from "@prisma/client";
 import { TotalExpensesPerCategory } from "./types";
 import { Decimal } from "@prisma/client/runtime/library";
+import { auth } from "@clerk/nextjs/server";
 
 export const getDashboard = async (month: string) => {
+  const {userId} = await auth();
+  if (!userId) {
+    throw new Error("Usuario não encontrado");
+    }
   const where = {
+    userId,
     date: {
       gte: new Date(`2024-${month}-01`),
       lte: new Date(`2024-${month}-31`),
     },
+    userId,
   };
   const depositsTotal = (
     await db.transaction.aggregate({

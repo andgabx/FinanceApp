@@ -4,8 +4,6 @@ import { LogInIcon } from "lucide-react";
 import { SignInButton } from "@clerk/nextjs";
 
 const LoginPage = async () => {
-  
-
   return (
     <div className="grid h-full grid-cols-2">
       <div className="flex flex-col h-full justify-center p-8 max-w-[550px] mx-auto">
@@ -22,7 +20,7 @@ const LoginPage = async () => {
           your transactions and provide personalized insights, making it easier
           to manage your budget.
         </p>
-        <SignInButton>
+        <SignInButton> 
           <Button
             variant="default"
             className="bg-muted text-primary-foreground hover:bg-opacity-80"
