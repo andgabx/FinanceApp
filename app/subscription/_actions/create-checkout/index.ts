@@ -12,17 +12,15 @@ export const createStripeCheckout = async () => {
     throw new Error("Stripe secret key not found");
   }
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2024-10-28.acacia",
+    apiVersion: "2024-11-20.acacia",
   });
-  const session = await stripe.checkout.sessions.create({ // faltando 1:40
+  const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "subscription",
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscription?success=true`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscription?canceled=true`,
-    subscription_data: {
-      metadata: {
-        clerk_user_id: userId,
-      },
+    success_url: "http://localhost:3000",
+    cancel_url: "http://localhost:3000",
+    metadata: {
+      clerk_user_id: userId,
     },
     line_items: [
       {
