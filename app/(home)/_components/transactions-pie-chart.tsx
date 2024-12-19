@@ -84,17 +84,17 @@ const TransactionsPieChart = ({
           <PercentageItem
             icon={<TrendingUpIcon className="text-primary" size={16} />}
             title="Receita"
-            amount={(depositsTotal / (depositsTotal + investmentsTotal + expensesTotal) * 100).toFixed(0)}
+            amount={Number((depositsTotal / (depositsTotal + investmentsTotal + expensesTotal) * 100).toFixed(0))}
           />
           <PercentageItem
             icon={<TrendingDownIcon className="text-red-500" size={16} />}
             title="Despesas"
-            amount={(expensesTotal / (depositsTotal + investmentsTotal + expensesTotal) * 100).toFixed(0)}
+            amount={Number((expensesTotal / (depositsTotal + investmentsTotal + expensesTotal) * 100).toFixed(0))}
           />
           <PercentageItem
             icon={<PiggyBank size={16} />}
             title="Investimentos"
-            amount={(investmentsTotal / (depositsTotal + investmentsTotal + expensesTotal) * 100).toFixed(0)}
+            amount={Number((investmentsTotal / (depositsTotal + investmentsTotal + expensesTotal) * 100).toFixed(0))}
           />
 
         </div>

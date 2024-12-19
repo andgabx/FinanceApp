@@ -1,6 +1,7 @@
-import { Transaction } from "@prisma/client";
+import { TransactionCategory } from "@prisma/client";
+
 export interface TotalExpensesPerCategory {
-    category: string;
+    category: TransactionCategory;
     totalAmount: number;
     percentageOfTotal: number;
 }

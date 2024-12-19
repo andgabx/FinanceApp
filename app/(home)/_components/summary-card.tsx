@@ -13,7 +13,13 @@ interface SummaryCardProps {
   userCanAddTransaction?: boolean;
 }
 
-const SummaryCard = ({ icon, title, amount, size, userCanAddTransaction }: SummaryCardProps) => {
+const SummaryCard = ({ 
+  icon, 
+  title, 
+  amount, 
+  size, 
+  userCanAddTransaction = false 
+}: SummaryCardProps) => {
   return (
     <Card className={`${size === 'large' ? '' : ''}`}>
       <CardHeader className="flex-row items-center gap-4">

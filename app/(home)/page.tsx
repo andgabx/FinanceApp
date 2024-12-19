@@ -12,12 +12,13 @@ import { canUserAddTransaction } from "../_data/can-user-add-transaction";
 import AiReportButton from "./_components/ai-report-button";
 
 interface HomeProps {
-  searchParams: {
-    month: string;
-  };
+  params: Promise<Record<string, string>>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-const Home = async ({ searchParams: { month } }: HomeProps) => {
+const Home = async ({ searchParams }: HomeProps) => {
+  const searchParamsResolved = await searchParams;
+  const month = searchParamsResolved.month as string;
   const { userId } = await auth();
   if (!userId) {
     redirect("/login");
@@ -52,24 +53,20 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
           {/* Esquerda */}
           <div className="flex flex-col gap-4">
             <SummaryCards
-              {...dashboard}
+              depositsTotal={Number(dashboard.depositsTotal) || 0}
+              investmentsTotal={Number(dashboard.investmentsTotal) || 0}
+              expensesTotal={Number(dashboard.expensesTotal) || 0}
+              balance={dashboard.balance}
               month={month}
               userCanAddTransaction={userCanAddTransaction}
             />
             <div className="grid grid-cols-3 grid-rows-1 gap-6">
               <TransactionsPieChart
-                depositsTotal={
-                  dashboard.depositsTotal ? Number(dashboard.depositsTotal) : 0
-                }
-                investmentsTotal={
-                  dashboard.investmentsTotal
-                    ? Number(dashboard.investmentsTotal)
-                    : 0
-                }
-                expensesTotal={
-                  dashboard.expensesTotal ? Number(dashboard.expensesTotal) : 0
-                }
+                depositsTotal={dashboard.depositsTotal ? Number(dashboard.depositsTotal) : 0}
+                investmentsTotal={dashboard.investmentsTotal ? Number(dashboard.investmentsTotal) : 0}
+                expensesTotal={dashboard.expensesTotal ? Number(dashboard.expensesTotal) : 0}
                 balance={dashboard.balance}
+                typesPercentage={dashboard.typesPercentage}
               />
               <ExpensePerCategory
                 expensesPerCategory={dashboard.TotalExpensesPerCategory}

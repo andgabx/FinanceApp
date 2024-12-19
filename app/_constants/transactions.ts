@@ -11,7 +11,7 @@ export const Transaction_Category_Labels = {
   HOUSING: "Moradia",
   INVESTMENT: "Investimento",
   TRANSPORTATION: "Transporte",
-  UTILITIES: "Utilidades",
+  UTILITY: "Utilidades",
   OTHER: "Outros",
   SALARY: "Salário",
   ENTERTAINMENT: "Entretenimento",
