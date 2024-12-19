@@ -1,22 +1,24 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { NumericFormat, NumericFormatProps } from "react-number-format";
+import { Input } from "@/app/_components/ui/input";
+import { cn } from "@/app/_lib/utils";
 
-import { Input, InputProps } from "@/app/_components/ui/input";
+interface MoneyInputProps extends Omit<NumericFormatProps, "prefix"> {
+  className?: string;
+}
 
-export const MoneyInput = forwardRef(
-  (
-    props: NumericFormatProps<InputProps>,
-    ref: React.ForwardedRef<HTMLInputElement>
-  ) => {
+export const MoneyInput = forwardRef<HTMLInputElement, MoneyInputProps>(
+  ({ className, ...props }, ref) => {
     return (
       <NumericFormat
-        {...props}
-        thousandSeparator="."
-        decimalSeparator=","
-        prefix="R$"
-        allowNegative={false}
         customInput={Input}
-        getInputRef={ref}
+        prefix="R$ "
+        decimalSeparator=","
+        thousandSeparator="."
+        decimalScale={2}
+        fixedDecimalScale
+        className={cn("", className)}
+        {...props}
       />
     );
   }
