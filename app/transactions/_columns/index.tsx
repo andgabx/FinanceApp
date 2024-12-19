@@ -2,13 +2,26 @@
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
 import { Transaction_Category_Labels, Transaction_Payment_Method_Labels } from "@/app/_constants/transactions";
-import { Transaction, TransactionType } from "@prisma/client";
+import { Transaction, TransactionCategory, TransactionPaymentMethod, TransactionType } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CircleIcon, Edit, PencilIcon, TrashIcon } from "lucide-react";
 import EditTransactionButton from "../_components/edit-transaction-button";
+import { formatCurrency } from "@/app/_utils/currency";
 
+interface TransactionTable {
+  id: string;
+  name: string;
+  type: TransactionType;
+  amount: number;
+  category: TransactionCategory;
+  paymentMethod: TransactionPaymentMethod;
+  date: Date;
+  createdAt: Date;
+  updateAt: Date;
+  userId: string;
+}
 
-export const transactionColumns: ColumnDef<Transaction>[] = [
+export const transactionColumns: ColumnDef<TransactionTable>[] = [
   {
     accessorKey: "name",
     header: "Nome",
@@ -61,12 +74,10 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "amount",
-    header: "Quantia",
-    cell: ({ row: { original: transaction } }) =>
-      new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(Number(transaction.amount)),
+    header: "Valor",
+    cell: ({ row }) => {
+      return formatCurrency(row.getValue("amount"));
+    },
   },
 
   {
@@ -91,12 +102,9 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "date",
     header: "Data",
-    cell: ({ row: { original: transaction } }) =>
-      new Date(transaction.date).toLocaleDateString("pt-BR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
+    cell: ({ row }) => {
+      return new Date(row.getValue("date")).toISOString().split('T')[0];
+    },
   },
 
   {

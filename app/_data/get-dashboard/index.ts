@@ -1,5 +1,5 @@
 import { db } from "@/app/_lib/prisma";
-import { TransactionType } from "@prisma/client";
+import { TransactionType, TransactionCategory } from "@prisma/client";
 import { TotalExpensesPerCategory } from "./types";
 import { Decimal } from "@prisma/client/runtime/library";
 import { auth } from "@clerk/nextjs/server";
@@ -15,7 +15,6 @@ export const getDashboard = async (month: string) => {
       gte: new Date(`2024-${month}-01`),
       lte: new Date(`2024-${month}-31`),
     },
-    userId,
   };
   const depositsTotal = (
     await db.transaction.aggregate({
@@ -49,9 +48,6 @@ export const getDashboard = async (month: string) => {
 
   const transactionsTotal = await db.transaction.count({
     where,
-    _sum: {
-      amount: true,
-    },
   });
 
   const TotalExpensesPerCategory: TotalExpensesPerCategory[] = (
@@ -63,7 +59,7 @@ export const getDashboard = async (month: string) => {
           amount: true,
         },
       })
-  ).map((category: { category: string; _sum: { amount: Decimal | null } }) => ({
+  ).map((category: { category: TransactionCategory; _sum: { amount: Decimal | null } }) => ({
     category: category.category,
     totalAmount: Number(category._sum.amount),
     percentageOfTotal: Math.round(
@@ -77,7 +73,19 @@ export const getDashboard = async (month: string) => {
       date: "desc",
     },
     take: 10,
-  });
+    select: {
+      id: true,
+      name: true,
+      type: true,
+      amount: true,
+      category: true,
+      paymentMethod: true,
+      date: true,
+    },
+  }).then(transactions => transactions.map(transaction => ({
+    ...transaction,
+    amount: Number(transaction.amount)
+  })));
 
   const typesPercentage = {
     [TransactionType.DEPOSIT]: Math.round(

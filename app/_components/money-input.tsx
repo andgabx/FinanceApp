@@ -5,6 +5,7 @@ import { cn } from "@/app/_lib/utils";
 
 interface MoneyInputProps extends Omit<NumericFormatProps, "prefix"> {
   className?: string;
+  onValueChange?: (value: { floatValue: number | undefined }) => void;
 }
 
 export const MoneyInput = forwardRef<HTMLInputElement, MoneyInputProps>(

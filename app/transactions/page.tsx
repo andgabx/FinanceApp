@@ -18,8 +18,23 @@ const TransactionPage = async () => {
   const transactions = await db.transaction.findMany({
     where: {
       userId,
-    }
-  });
+    },
+    select: {
+      id: true,
+      name: true,
+      type: true,
+      amount: true,
+      category: true,
+      paymentMethod: true,
+      date: true,
+      createdAt: true,
+      updateAt: true,
+      userId: true,
+    },
+  }).then(transactions => transactions.map(transaction => ({
+    ...transaction,
+    amount: Number(transaction.amount)
+  })));
 
   const userCanAddTransaction = await canUserAddTransaction();
 

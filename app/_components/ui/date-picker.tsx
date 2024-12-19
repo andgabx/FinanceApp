@@ -3,39 +3,31 @@
 import * as React from "react";
 import { ptBR } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 
 import { cn } from "@/app/_lib/utils";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { SelectSingleEventHandler } from "react-day-picker";
 
 interface DatePickerProps {
   value?: Date;
-  onChange?: SelectSingleEventHandler;
+  onChange?: (date: Date | undefined) => void;
 }
 
-export const DatePicker = ({ value, onChange }) => {
+export const DatePicker = ({ value, onChange }: DatePickerProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant="outline"
           className={cn(
             "w-full justify-start text-left font-normal",
             !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? (
-            new Date(value).toLocaleDateString("pt-BR", {
-                year: "numeric",
-                month: "long",
-                day: "2-digit",
-                })
-            ) : (
-                "Selecione a data"
-            )}
+          {value ? format(value, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -44,7 +36,6 @@ export const DatePicker = ({ value, onChange }) => {
           selected={value}
           onSelect={onChange}
           initialFocus
-          locale={ptBR}
         />
       </PopoverContent>
     </Popover>

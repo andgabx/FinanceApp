@@ -1,4 +1,4 @@
-import { TransactionCategory } from "@prisma/client";
+import { Transaction, TransactionCategory } from "@prisma/client";
 
 export interface TotalExpensesPerCategory {
     category: TransactionCategory;

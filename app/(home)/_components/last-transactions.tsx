@@ -2,20 +2,28 @@ import Image from "next/image";
 import { Button } from "@/app/_components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/app/_components/ui/card";
 import { formatCurrency } from "@/app/_utils/currency";
-import { Transaction, TransactionType } from "@prisma/client";
+import { Transaction, TransactionType, TransactionCategory, TransactionPaymentMethod } from "@prisma/client";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import Link from "next/link";
 import { Transaction_Payment_Method_Labels } from "@/app/_constants/transactions";
 import { Transaction_Payment_Method_Icons } from "@/app/_constants/transactions";
 
 interface LastTransactionsProps {
-  lastTransactions: Transaction[];
+  lastTransactions: {
+    id: string;
+    name: string;
+    type: TransactionType;
+    amount: number;
+    category: TransactionCategory;
+    paymentMethod: TransactionPaymentMethod;
+    date: Date;
+  }[];
 }
 
 const LastTransactions = ({ lastTransactions }: LastTransactionsProps) => {
-  const getPriceColor = (transaction: Transaction) => {
+  const getPriceColor = (transaction: LastTransactionsProps['lastTransactions'][0]) => {
     if (transaction.type === TransactionType.EXPENSE) {
-        return "text-red-500";
+      return "text-red-500";
     }
     if (transaction.type === TransactionType.DEPOSIT) {
       return "text-primary";
@@ -23,7 +31,7 @@ const LastTransactions = ({ lastTransactions }: LastTransactionsProps) => {
     return "text-white";
   };
 
-  const getAmountPrefix = (transaction: Transaction) => {
+  const getAmountPrefix = (transaction: LastTransactionsProps['lastTransactions'][0]) => {
     if (transaction.type === TransactionType.DEPOSIT) {
       return "+";
     }

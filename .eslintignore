@@ -1,4 +1,4 @@
-tailwind.config.ts
-app/_lib/
-
-
+node_modules
+.next
+build
+dist 
