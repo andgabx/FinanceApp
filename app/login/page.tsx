@@ -4,6 +4,10 @@ import { LogInIcon } from "lucide-react";
 import { SignInButton } from "@clerk/nextjs";
 
 const LoginPage = async () => {
+  const { userId } = await auth();
+  if (userId) {
+    redirect("/");
+  }
   return (
     <div className="grid h-full grid-cols-2">
       <div className="flex flex-col h-full justify-center p-8 max-w-[550px] mx-auto">
