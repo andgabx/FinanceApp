@@ -5,7 +5,7 @@ Uma aplicação web moderna para gestão financeira pessoal, permitindo controle
 ## 🚀 Funcionalidades
 
 ### Gestão de Transações
-- ✅ Cadastro de despesas, receitas e investimentos
+- ✅ Cadastro e remoção de despesas, receitas e investimentos
 - 📊 Categorização automática de transações
 - 💳 Suporte a múltiplos métodos de pagamento
 - 📅 Organização por período (mensal)
