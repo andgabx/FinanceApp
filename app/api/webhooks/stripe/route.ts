@@ -23,29 +23,33 @@ export const POST = async (request: Request) => {
   );
 
   switch (event.type) {
-    case "checkout.session.completed": {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const clerkUserId = session.metadata?.clerk_user_id;
+    case "invoice.paid": {
+      const invoice = event.data.object as Stripe.Invoice;
+
+
+      const clerkUserId = invoice.metadata?.clerk_user_id;
       if (!clerkUserId) {
         console.error("No clerk_user_id in metadata");
         return NextResponse.error();
       }
+
       const clerk = await clerkClient();
       await clerk.users.updateUser(clerkUserId, {
         privateMetadata: {
-          stripeCustomerId: session.customer as string,
-          stripeSubscriptionId: session.subscription as string,
+          stripeCustomerId: invoice.customer as string,
+          stripeSubscriptionId: invoice.subscription as string,
         },
         publicMetadata: {
           subscriptionPlan: "premium",
         },
       });
+
       console.log("User updated successfully");
       break;
     }
     case "customer.subscription.deleted": {
       const subscription = await stripe.subscriptions.retrieve(
-        event.data.object.id,
+        event.data.object.id
       );
       const clerkUserId = subscription.metadata.clerk_user_id;
       if (!clerkUserId) {
