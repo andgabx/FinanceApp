@@ -25,11 +25,6 @@ export const POST = async (request: Request) => {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
-      console.log("Session data:", {
-        metadata: session.metadata,
-        customer: session.customer,
-        subscription: session.subscription,
-      });
       const clerkUserId = session.metadata?.clerk_user_id;
       if (!clerkUserId) {
         console.error("No clerk_user_id in metadata");
