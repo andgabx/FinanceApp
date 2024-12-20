@@ -23,7 +23,7 @@ export const POST = async (request: Request) => {
   );
 
   switch (event.type) {
-    case "invoice.paid": {
+    case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       console.log("Session data:", {
         metadata: session.metadata,
