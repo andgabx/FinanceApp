@@ -1,4 +1,4 @@
-import { clerkClient } from "@clerk/nextjs/server";
+import { Clerk } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -17,7 +17,7 @@ export const POST = async (request: Request) => {
   const event = stripe.webhooks.constructEvent(
     text,
     signature,
-    process.env.STRIPE_WEBHOOK_SECRET,
+    process.env.STRIPE_WEBHOOK_SECRET
   );
 
   switch (event.type) {
@@ -28,7 +28,7 @@ export const POST = async (request: Request) => {
       if (!clerkUserId) {
         return NextResponse.error();
       }
-      const clerk = await clerkClient();
+      const clerk = Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
       await clerk.users.updateUser(clerkUserId, {
         privateMetadata: {
           stripeCustomerId: customer,
@@ -41,16 +41,15 @@ export const POST = async (request: Request) => {
       break;
     }
     case "customer.subscription.deleted": {
-      // Remover plano premium do usuário
       const subscription = await stripe.subscriptions.retrieve(
-        event.data.object.id,
+        event.data.object.id
       );
       const clerkUserId = subscription.metadata.clerk_user_id;
       if (!clerkUserId) {
         return NextResponse.error();
       }
-      const clerk = await clerkClient();
-      await clerkClient().users.updateUser(clerkUserId, {
+      const clerk = Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
+      await clerk.users.updateUser(clerkUserId, {
         privateMetadata: {
           stripeCustomerId: null,
           stripeSubscriptionId: null,
@@ -59,6 +58,7 @@ export const POST = async (request: Request) => {
           subscriptionPlan: null,
         },
       });
+      break;
     }
   }
   return NextResponse.json({ received: true });
