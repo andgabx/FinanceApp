@@ -104,7 +104,11 @@ export const transactionColumns: ColumnDef<TransactionTable>[] = [
     accessorKey: "date",
     header: "Data",
     cell: ({ row }) => {
-      return new Date(row.getValue("date")).toISOString().split('T')[0];
+      return new Date(row.getValue("date")).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
     },
   },
 

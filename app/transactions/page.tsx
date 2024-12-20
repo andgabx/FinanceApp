@@ -19,6 +19,9 @@ const TransactionPage = async () => {
     where: {
       userId,
     },
+    orderBy: {
+      date: "desc",
+    },
     select: {
       id: true,
       name: true,
