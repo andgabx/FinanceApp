@@ -22,14 +22,14 @@ export const POST = async (request: Request) => {
 
   switch (event.type) {
     case "invoice.paid": {
-      // Atualizar o usuário com o seu novo plano
       const { customer, subscription, subscription_details } =
         event.data.object;
       const clerkUserId = subscription_details?.metadata?.clerk_user_id;
       if (!clerkUserId) {
         return NextResponse.error();
       }
-      await clerkClient().users.updateUser(clerkUserId, {
+      const clerk = await clerkClient();
+      await clerk.users.updateUser(clerkUserId, {
         privateMetadata: {
           stripeCustomerId: customer,
           stripeSubscriptionId: subscription,
