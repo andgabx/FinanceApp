@@ -22,9 +22,8 @@ export const POST = async (request: Request) => {
     process.env.STRIPE_WEBHOOK_SECRET,
   );
 
-  console.log("Webhook event type:", event.type);
   switch (event.type) {
-    case "checkout.session.completed": {
+    case "invoice.paid": {
       const session = event.data.object as Stripe.Checkout.Session;
       console.log("Session data:", {
         metadata: session.metadata,
