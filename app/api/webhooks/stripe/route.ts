@@ -4,10 +4,12 @@ import Stripe from "stripe";
 
 export const POST = async (request: Request) => {
   if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
+    console.error("Missing Stripe configuration");
     return NextResponse.error();
   }
   const signature = request.headers.get("stripe-signature");
   if (!signature) {
+    console.error("Missing Stripe signature");
     return NextResponse.error();
   }
   const text = await request.text();
@@ -20,28 +22,34 @@ export const POST = async (request: Request) => {
     process.env.STRIPE_WEBHOOK_SECRET,
   );
 
+  console.log("Webhook event type:", event.type);
   switch (event.type) {
-    case "invoice.paid": {
-      // Atualizar o usuário com o seu novo plano
-      const { customer, subscription, subscription_details } =
-        event.data.object;
-      const clerkUserId = subscription_details?.metadata?.clerk_user_id;
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      console.log("Session data:", {
+        metadata: session.metadata,
+        customer: session.customer,
+        subscription: session.subscription,
+      });
+      const clerkUserId = session.metadata?.clerk_user_id;
       if (!clerkUserId) {
+        console.error("No clerk_user_id in metadata");
         return NextResponse.error();
       }
-      await clerkClient().users.updateUser(clerkUserId, {
+      const clerk = await clerkClient();
+      await clerk.users.updateUser(clerkUserId, {
         privateMetadata: {
-          stripeCustomerId: customer,
-          stripeSubscriptionId: subscription,
+          stripeCustomerId: session.customer as string,
+          stripeSubscriptionId: session.subscription as string,
         },
         publicMetadata: {
           subscriptionPlan: "premium",
         },
       });
+      console.log("User updated successfully");
       break;
     }
     case "customer.subscription.deleted": {
-      // Remover plano premium do usuário
       const subscription = await stripe.subscriptions.retrieve(
         event.data.object.id,
       );
@@ -49,7 +57,8 @@ export const POST = async (request: Request) => {
       if (!clerkUserId) {
         return NextResponse.error();
       }
-      await clerkClient().users.updateUser(clerkUserId, {
+      const clerk = await clerkClient();
+      await clerk.users.updateUser(clerkUserId, {
         privateMetadata: {
           stripeCustomerId: null,
           stripeSubscriptionId: null,
@@ -58,6 +67,7 @@ export const POST = async (request: Request) => {
           subscriptionPlan: null,
         },
       });
+      break;
     }
   }
   return NextResponse.json({ received: true });
