@@ -49,6 +49,7 @@ export const POST = async (request: Request) => {
       if (!clerkUserId) {
         return NextResponse.error();
       }
+      const clerk = await clerkClient();
       await clerkClient().users.updateUser(clerkUserId, {
         privateMetadata: {
           stripeCustomerId: null,
