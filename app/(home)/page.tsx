@@ -19,6 +19,9 @@ interface HomeProps {
 const Home = async ({ searchParams }: HomeProps) => {
   const searchParamsResolved = await searchParams;
   const month = searchParamsResolved.month as string;
+  const year =
+    (searchParamsResolved.year as string) ||
+    new Date().getFullYear().toString();
   const { userId } = await auth();
   if (!userId) {
     redirect("/login");
@@ -28,7 +31,7 @@ const Home = async ({ searchParams }: HomeProps) => {
     redirect(`?month=${new Date().getMonth() + 1}`);
   }
 
-  const dashboard = await getDashboard(month);
+  const dashboard = await getDashboard(month, year);
   const userCanAddTransaction = await canUserAddTransaction();
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
@@ -62,9 +65,17 @@ const Home = async ({ searchParams }: HomeProps) => {
             />
             <div className="grid grid-cols-3 grid-rows-1 gap-6">
               <TransactionsPieChart
-                depositsTotal={dashboard.depositsTotal ? Number(dashboard.depositsTotal) : 0}
-                investmentsTotal={dashboard.investmentsTotal ? Number(dashboard.investmentsTotal) : 0}
-                expensesTotal={dashboard.expensesTotal ? Number(dashboard.expensesTotal) : 0}
+                depositsTotal={
+                  dashboard.depositsTotal ? Number(dashboard.depositsTotal) : 0
+                }
+                investmentsTotal={
+                  dashboard.investmentsTotal
+                    ? Number(dashboard.investmentsTotal)
+                    : 0
+                }
+                expensesTotal={
+                  dashboard.expensesTotal ? Number(dashboard.expensesTotal) : 0
+                }
                 balance={dashboard.balance}
                 typesPercentage={dashboard.typesPercentage}
               />

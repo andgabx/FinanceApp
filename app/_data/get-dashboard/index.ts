@@ -4,7 +4,7 @@ import { TotalExpensesPerCategory } from "./types";
 import { Decimal } from "@prisma/client/runtime/library";
 import { auth } from "@clerk/nextjs/server";
 
-export const getDashboard = async (month: string) => {
+export const getDashboard = async (month: string, year: string) => {
   const {userId} = await auth();
   if (!userId) {
     throw new Error("Usuario não encontrado");
@@ -12,10 +12,11 @@ export const getDashboard = async (month: string) => {
   const where = {
     userId,
     date: {
-      gte: new Date(`2024-${month}-01`),
-      lte: new Date(`2024-${month}-31`),
+      gte: new Date(`${year}-${month}-01`),
+      lte: new Date(`${year}-${month}-31`),
     },
   };
+
   const depositsTotal = (
     await db.transaction.aggregate({
       where: { ...where, type: TransactionType.DEPOSIT },
